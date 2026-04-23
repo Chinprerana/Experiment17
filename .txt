@@ -1,0 +1,65 @@
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Chinmaya V Kavali>docker --version
+Docker version 29.3.1, build c2be9cc
+
+C:\Users\Chinmaya V Kavali>docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+85c66128325a: Pull complete
+ce776bbcda0d: Pull complete
+801a1ad15b4e: Pull complete
+4677c2a9a3d4: Pull complete
+ff048f1f2159: Pull complete
+3531af2bc2a9: Pull complete
+677c63196868: Pull complete
+54c38c75806e: Download complete
+69989ccd189b: Download complete
+Digest: sha256:6e23479198b998e5e25921dff8455837c7636a67111a04a635cf1bb363d199dc
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+
+C:\Users\Chinmaya V Kavali>docker run -d -p 8080:80 nginx
+af01eae76394de7d367c889a580ce70dfff80ab1e5bf4ef13552ad4c877b4929
+docker: Error response from daemon: ports are not available: exposing port TCP 0.0.0.0:8080 -> 127.0.0.1:0: listen tcp 0.0.0.0:8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+
+Run 'docker run --help' for more information
+
+C:\Users\Chinmaya V Kavali>docker run -d -p 8082:80 nginx
+749ef7fe34c134976727f81a90227f7ffeb2f220cfd0057f170f3986cea0b238
+
+C:\Users\Chinmaya V Kavali>docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+749ef7fe34c1   nginx            "/docker-entrypoint.…"   31 seconds ago   Up 30 seconds   0.0.0.0:8082->80/tcp, [::]:8082->80/tcp       flamboyant_jackson
+c820ab4e777b   my-python-app1   "python app.py"          12 minutes ago   Up 12 minutes   0.0.0.0:5020->5020/tcp, [::]:5020->5020/tcp   zealous_swartz
+
+C:\Users\Chinmaya V Kavali>docker volume create-my-volume
+docker: unknown command: docker volume create-my-volume
+
+Usage:  docker volume COMMAND
+
+Run 'docker volume --help' for more information
+
+C:\Users\Chinmaya V Kavali>docker volume create my-volume
+my-volume
+
+C:\Users\Chinmaya V Kavali>docker volume ls
+DRIVER    VOLUME NAME
+local     my-volume
+
+C:\Users\Chinmaya V Kavali>docker run -d -p 8081:80 -v my-volume:/usr/share/nginx/html nginx
+8bf2bddb8bc3c76f82074009ac7c00eabe6c417ccd8f4d56018bfd5084ad8c16
+
+C:\Users\Chinmaya V Kavali>docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+8bf2bddb8bc3   nginx            "/docker-entrypoint.…"   12 seconds ago       Up 11 seconds       0.0.0.0:8081->80/tcp, [::]:8081->80/tcp       cool_lichterman
+749ef7fe34c1   nginx            "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8082->80/tcp, [::]:8082->80/tcp       flamboyant_jackson
+c820ab4e777b   my-python-app1   "python app.py"          13 minutes ago       Up 13 minutes       0.0.0.0:5020->5020/tcp, [::]:5020->5020/tcp   zealous_swartz
+
+C:\Users\Chinmaya V Kavali>docker exec -it 8bf2bddb8bc3 bash
+root@8bf2bddb8bc3:/# echo "Hello Persistent Storage!" > /usr/share/nginx/html/index.html
+root@8bf2bddb8bc3:/# ecit
+bash: ecit: command not found
+root@8bf2bddb8bc3:/# exit
+exit
